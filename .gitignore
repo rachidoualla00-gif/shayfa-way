@@ -1,6 +1,27 @@
-*.py
-__pycache__/
-*.bat
+# Python scripts (internal tools)
 deploy_netlify.py
-upload_to_github.bat
 github_push.py
+
+# Batch files (internal tools)
+upload_to_github.bat
+
+# Temporary files
+*.tmp
+~*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if installed locally)
+node_modules/
+
+# Environment files with secrets
+.env
+backend/.env
+
+# Flutter build
+mobile-app/build/
+mobile-app/.dart_tool/
+mobile-app/.flutter-plugins
+mobile-app/.flutter-plugins-dependencies
