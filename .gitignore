@@ -1,0 +1,6 @@
+*.py
+__pycache__/
+*.bat
+deploy_netlify.py
+upload_to_github.bat
+github_push.py

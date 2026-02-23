@@ -1,0 +1,17 @@
+{
+    "name": "Shayfa Way",
+    "short_name": "ShayfaWay",
+    "description": "Premium Islamic Lifestyle Application",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#4A7C59",
+    "theme_color": "#4A7C59",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/2855/2855177.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

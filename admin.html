@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shayfa Control | لوحة التحكم المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D6A4F;
+            --sidebar: #121413;
+            --bg: #f4f7f6;
+            --surface: #ffffff;
+            --text: #1a1c1b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Amiri', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            color: var(--text);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+
+        .brand {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .brand h2 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 4px solid var(--primary);
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        #view-area {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card h4 {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .stat-card p {
+            margin: 10px 0 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Forms */
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background: transparent;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            text-align: right;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="brand">
+            <h2>Shayfa Control</h2>
+        </div>
+        <nav class="nav">
+            <div onclick="navigate('dashboard')" class="nav-link active" id="link-dashboard"><i
+                    class="fa-solid fa-chart-line"></i> الإحصائيات</div>
+            <div onclick="navigate('home')" class="nav-link" id="link-home"><i class="fa-solid fa-house"></i> الواجهة
+                الرئيسية</div>
+            <div onclick="navigate('quran')" class="nav-link" id="link-quran"><i class="fa-solid fa-book-quran"></i>
+                إدارة القرآن</div>
+            <div onclick="navigate('store')" class="nav-link" id="link-store"><i class="fa-solid fa-bag-shopping"></i>
+                المتجر الإسلامي</div>
+            <div onclick="navigate('videos')" class="nav-link" id="link-videos"><i class="fa-solid fa-play-circle"></i>
+                الدروس العلمية</div>
+            <div onclick="navigate('prayers')" class="nav-link" id="link-prayers"><i class="fa-solid fa-clock"></i>
+                توقيت الصلاة</div>
+        </nav>
+    </div>
+
+    <div class="main">
+        <header>
+            <h1 id="view-title">الإحصائيات</h1>
+            <div style="display:flex; align-items:center; gap:20px;">
+                <button class="btn" style="background:#8b5cf6; color:white;" onclick="seedDatabase()"><i
+                        class="fa-solid fa-magic"></i> ملء التطبيق</button>
+                <span class="badge badge-success"><i class="fa-solid fa-circle"></i> متصل</span>
+                <button class="btn btn-outline" onclick="exportData()"><i class="fa-solid fa-download"></i> تصدير
+                    البيانات</button>
+            </div>
+        </header>
+
+        <div id="view-area">
+            <!-- Content will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        /**
+         * SHAYFA CONTROL MASTER SCRIPT V25
+         * Synchronized with 'shayfa.html' via LocalStorage & IndexedDB
+         */
+
+        let currentView = 'dashboard';
+
+        // Data Structure (Fallback to Defaults)
+        let APP_DATA = JSON.parse(localStorage.getItem('app_master_data')) || {
+            branding: { title: "Shayfa Way", slogan: "طريقك إلى حياة أفضل" },
+            home: {
+                verse: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+                ref: "Surah Ar-Ra'd (13:28)",
+                dhikr: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لا إِلَهَ إِلا اللَّهُ وَحْدَهُ لا شَرِيكَ لَهُ"
+            },
+            prayers: {
+                fajr: "05:12", shuruq: "06:34", dhuhr: "12:34", asr: "15:45", maghrib: "18:30", isha: "19:50"
+            },
+            stats: { users: 1248, orders: 45, sales: 5240 }
+        };
+
+        // IndexedDB Dynamic Content (Quran, Store, Videos)
+        const DB_NAME = 'Shayfa_V25_Official';
+        let db;
+
+        async function initDB() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const d = e.target.result;
+                    if (!d.objectStoreNames.contains('quran')) d.createObjectStore('quran', { keyPath: 'id' });
+                    if (!d.objectStoreNames.contains('store')) d.createObjectStore('store', { keyPath: 'id' });
+                    if (!d.objectStoreNames.contains('videos')) d.createObjectStore('videos', { keyPath: 'id' });
+                };
+                request.onsuccess = (e) => { db = e.target.result; resolve(); };
+            });
+        }
+
+        async function dbGetAll(table) {
+            return new Promise(res => {
+                const tx = db.transaction(table, 'readonly');
+                tx.objectStore(table).getAll().onsuccess = (e) => res(e.target.result);
+            });
+        }
+
+        async function dbPut(table, data) {
+            const tx = db.transaction(table, 'readwrite');
+            tx.objectStore(table).put(data);
+        }
+
+        async function dbDelete(table, id) {
+            const tx = db.transaction(table, 'readwrite');
+            tx.objectStore(table).delete(id);
+        }
+
+        // --- VIEWS ---
+        async function navigate(view) {
+            currentView = view;
+            const area = document.getElementById('view-area');
+            const title = document.getElementById('view-title');
+
+            // Navigation UI
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('link-' + view).classList.add('active');
+
+            area.innerHTML = '<h2>جاري التحميل...</h2>';
+
+            if (view === 'dashboard') {
+                title.innerText = "الإحصائيات العامّة";
+                area.innerHTML = `
+                    <div class="stats-grid">
+                        <div class="stat-card"><h4>المستخدمين</h4><p>${APP_DATA.stats.users.toLocaleString()}</p></div>
+                        <div class="stat-card"><h4>إجمالي الطلبات</h4><p>${APP_DATA.stats.orders}</p></div>
+                        <div class="stat-card"><h4>المبيعات (درهم)</h4><p>${APP_DATA.stats.sales.toLocaleString()} DH</p></div>
+                    </div>
+                    <div class="form-box">
+                        <h3>تعديل إحصائيات وهمية (للديمو)</h3>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
+                            <input type="number" id="st-users" value="${APP_DATA.stats.users}" placeholder="المستخدمين">
+                            <input type="number" id="st-orders" value="${APP_DATA.stats.orders}" placeholder="الطلبات">
+                            <input type="number" id="st-sales" value="${APP_DATA.stats.sales}" placeholder="المبيعات">
+                        </div>
+                        <button class="btn btn-primary" style="margin-top:15px;" onclick="saveStats()">تحديث الإحصائيات</button>
+                    </div>
+                `;
+            } else if (view === 'home') {
+                title.innerText = "إدارة محتوى الواجهة";
+                area.innerHTML = `
+                    <div class="form-box">
+                        <h3>الصفحة الرئيسية</h3>
+                        <div class="form-group"><label>آية اليوم</label><textarea id="h-verse">${APP_DATA.home.verse}</textarea></div>
+                        <div class="form-group"><label>المرجع</label><input type="text" id="h-ref" value="${APP_DATA.home.ref}"></div>
+                        <div class="form-group"><label>ذكر اليوم</label><textarea id="h-dhikr">${APP_DATA.home.dhikr}</textarea></div>
+                    </div>
+                    <div class="form-box">
+                        <h3>هوية التطبيق</h3>
+                        <div class="form-group"><label>اسم التطبيق</label><input type="text" id="b-title" value="${APP_DATA.branding.title}"></div>
+                        <div class="form-group"><label>الشعار (Slogan)</label><input type="text" id="b-slogan" value="${APP_DATA.branding.slogan}"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveHome()">حفظ جميع الإعدادات</button>
+                `;
+            } else if (view === 'quran') {
+                title.innerText = "إدارة مكتبة المصاحف (PDF)";
+                const pdfs = await dbGetAll('quran');
+                area.innerHTML = `
+                    <div class="form-box">
+                        <h3>رفع مصحف أو سورة (PDF)</h3>
+                        <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; margin-bottom:15px;">
+                            <div class="form-group">
+                                <label>العنوان (مثلاً: المصحف الكامل)</label>
+                                <input type="text" id="pdf-title" placeholder="أدخل العنوان...">
+                            </div>
+                            <div class="form-group">
+                                <label>التصنيف</label>
+                                <select id="pdf-cat">
+                                    <option value="full">مصحف كامل</option>
+                                    <option value="juz">جزء</option>
+                                    <option value="surah">سورة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>اللغة/النوع</label>
+                                <input type="text" id="pdf-tag" placeholder="عربي، تجويد، تفسير...">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>اختيار ملف PDF</label>
+                            <input type="file" id="pdf-file" accept="application/pdf" style="border: 2px dashed var(--border); padding: 30px; text-align: center;">
+                        </div>
+                        <div id="upload-status" style="margin-top:10px; font-weight:700;"></div>
+                        <button class="btn btn-primary" style="margin-top:15px; width:100%;" onclick="uploadQuranPDF()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> رفع وتخزين في النظام
+                        </button>
+                    </div>
+
+                    <div class="form-box">
+                        <h3>المكتبة الحالية</h3>
+                        <table>
+                            <thead><tr><th>العنوان</th><th>التصنيف</th><th>الحجم</th><th>العمليات</th></tr></thead>
+                            <tbody id="pdf-table-body">
+                                ${pdfs.map(p => `
+                                    <tr>
+                                        <td>${p.title}</td>
+                                        <td><span class="badge" style="background:#eee">${p.category}</span></td>
+                                        <td>${(p.size / 1024 / 1024).toFixed(2)} MB</td>
+                                        <td>
+                                            <button class="btn btn-danger" onclick="delItem('quran', '${p.id}')">حذف</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (view === 'store') {
+                title.innerText = "إدارة منتجات المتجر";
+                const items = await dbGetAll('store');
+                area.innerHTML = `
+                    <div class="form-box">
+                        <h3>إضافة منتج جديد</h3>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                            <div class="form-group">
+                                <label>اسم المنتج</label>
+                                <input type="text" id="p-title" placeholder="مثلاً: سجادة صلاة">
+                            </div>
+                            <div class="form-group">
+                                <label>الثمن (درهم)</label>
+                                <input type="number" id="p-price" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>صورة المنتج</label>
+                            <input type="file" id="p-image" accept="image/*" style="border: 2px dashed var(--border); padding: 20px; width: 100%;" onchange="previewProductImage(this)">
+                            <div id="p-img-preview" style="margin-top:10px; text-align:center; display:none;">
+                                <img src="" id="target-p-img" style="max-height:100px; border-radius:10px;">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width:100%;" onclick="addStore()">إضافة للمتجر</button>
+                    </div>
+                    <table>
+                        <thead><tr><th>الصورة</th><th>المنتج</th><th>الثمن</th><th>العمليات</th></tr></thead>
+                        <tbody>
+                            ${items.map(i => `
+                                <tr>
+                                    <td>${i.image ? `<img src="${i.image}" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">` : `<i class="fa-solid ${i.icon || 'fa-rug'}" style="font-size:1.5rem; color:#ccc"></i>`}</td>
+                                    <td>${i.title}</td>
+                                    <td>${i.price} DH</td>
+                                    <td><button class="btn btn-danger" onclick="delItem('store', '${i.id}')">حذف</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (view === 'videos') {
+                title.innerText = "إدارة الدروس العلمية";
+                const vids = await dbGetAll('videos');
+                area.innerHTML = `
+                    <div class="form-box">
+                        <h3>إضافة درس جديد</h3>
+                        <input type="text" id="v-title" placeholder="عنوان الدرس" style="margin-bottom:10px;">
+                        <input type="text" id="v-cat" placeholder="التصنيف">
+                        <button class="btn btn-primary" style="margin-top:15px;" onclick="addVideo()">إضافة الدرس</button>
+                    </div>
+                    <table>
+                        <thead><tr><th>عنوان الدرس</th><th>التصنيف</th><th>العمليات</th></tr></thead>
+                        <tbody>
+                            ${vids.map(v => `<tr><td>${v.title}</td><td>${v.cat}</td><td><span class="btn btn-danger" onclick="delItem('videos', '${v.id}')">حذف</span></td></tr>`).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (view === 'prayers') {
+                title.innerText = "تعديل أوقات الصلاة";
+                area.innerHTML = `
+                    <div class="form-box">
+                        <div class="form-group"><label>الفجر</label><input type="text" id="pr-fajr" value="${APP_DATA.prayers.fajr}"></div>
+                        <div class="form-group"><label>الشروق</label><input type="text" id="pr-shuruq" value="${APP_DATA.prayers.shuruq}"></div>
+                        <div class="form-group"><label>الظهر</label><input type="text" id="pr-dhuhr" value="${APP_DATA.prayers.dhuhr}"></div>
+                        <div class="form-group"><label>العصر</label><input type="text" id="pr-asr" value="${APP_DATA.prayers.asr}"></div>
+                        <div class="form-group"><label>المغرب</label><input type="text" id="pr-maghrib" value="${APP_DATA.prayers.maghrib}"></div>
+                        <div class="form-group"><label>العشاء</label><input type="text" id="pr-isha" value="${APP_DATA.prayers.isha}"></div>
+                        <button class="btn btn-primary" onclick="savePrayers()">تحديث أوقات الصلاة</button>
+                    </div>
+                `;
+            }
+        }
+
+        // --- ACTIONS ---
+        function saveStats() {
+            APP_DATA.stats.users = parseInt(document.getElementById('st-users').value);
+            APP_DATA.stats.orders = parseInt(document.getElementById('st-orders').value);
+            APP_DATA.stats.sales = parseInt(document.getElementById('st-sales').value);
+            saveAll();
+        }
+
+        function saveHome() {
+            APP_DATA.home.verse = document.getElementById('h-verse').value;
+            APP_DATA.home.ref = document.getElementById('h-ref').value;
+            APP_DATA.home.dhikr = document.getElementById('h-dhikr').value;
+            APP_DATA.branding.title = document.getElementById('b-title').value;
+            APP_DATA.branding.slogan = document.getElementById('b-slogan').value;
+            saveAll();
+        }
+
+        function savePrayers() {
+            APP_DATA.prayers.fajr = document.getElementById('pr-fajr').value;
+            APP_DATA.prayers.shuruq = document.getElementById('pr-shuruq').value;
+            APP_DATA.prayers.dhuhr = document.getElementById('pr-dhuhr').value;
+            APP_DATA.prayers.asr = document.getElementById('pr-asr').value;
+            APP_DATA.prayers.maghrib = document.getElementById('pr-maghrib').value;
+            APP_DATA.prayers.isha = document.getElementById('pr-isha').value;
+            saveAll();
+        }
+
+        async function seedDatabase() {
+            if (!confirm('هل تريد ملء التطبيق بمحتوى تجريبي (سور، منتجات، دروس)؟')) return;
+
+            // 1. Seed Store
+            const sampleStore = [
+                { id: 'p1', title: "سجادة صلاة طبية فاخرة", price: 450, icon: "fa-rug" },
+                { id: 'p2', title: "مصحف التجويد الملون", price: 150, icon: "fa-book-quran" },
+                { id: 'p3', title: "مسبحة إلكترونية ذكية", price: 45, icon: "fa-fingerprint" },
+                { id: 'p4', title: "حامل مصحف خشبي مزخرف", price: 280, icon: "fa-scroll" }
+            ];
+            for (const p of sampleStore) await dbPut('store', p);
+
+            // 2. Seed Videos
+            const sampleVideos = [
+                { id: 'v1', title: "سلسلة أذكار الصباح كاملة", cat: "أذكار", dur: "15:20" },
+                { id: 'v2', title: "قصة سيدنا موسى عليه السلام", cat: "قصص الأنبياء", dur: "45:00" },
+                { id: 'v3', title: "تعليم الصلاة للأطفال", cat: "تعليم", dur: "10:30" }
+            ];
+            for (const v of sampleVideos) await dbPut('videos', v);
+
+            // 3. Seed Metadata (Prayers, etc)
+            APP_DATA.stats = { users: 2450, orders: 89, sales: 12500 };
+            saveAll();
+
+            alert('تم ملء التطبيق بنجاح! يرجى تحديث صفحة التطبيق.');
+            navigate('dashboard');
+        }
+
+        async function uploadQuranPDF() {
+            const fileInput = document.getElementById('pdf-file');
+            const titleInput = document.getElementById('pdf-title');
+            const catSelect = document.getElementById('pdf-cat');
+            const tagInput = document.getElementById('pdf-tag');
+            const status = document.getElementById('upload-status');
+
+            if (!fileInput.files[0] || !titleInput.value) {
+                alert('يرجى اختيار ملف وإدخال عنوان');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الرفع والتشفير...';
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const blob = new Blob([e.target.result], { type: 'application/pdf' });
+                const data = {
+                    id: 'q-' + Date.now(),
+                    title: titleInput.value,
+                    category: catSelect.value,
+                    tag: tagInput.value,
+                    size: file.size,
+                    blob: blob,
+                    uploadedAt: new Date().toISOString()
+                };
+
+                try {
+                    await dbPut('quran', data);
+                    status.innerHTML = '<span style="color:var(--primary)">✓ تم الرفع بنجاح!</span>';
+                    setTimeout(() => navigate('quran'), 1000);
+                } catch (err) {
+                    status.innerHTML = '<span style="color:red">☓ خطأ في التخزين</span>';
+                    console.error(err);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function previewProductImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('p-img-preview').style.display = 'block';
+                    document.getElementById('target-p-img').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function addStore() {
+            const title = document.getElementById('p-title').value;
+            const price = document.getElementById('p-price').value;
+            const imgInput = document.getElementById('p-image');
+
+            if (!title || !price) {
+                alert('يرجى ملء الاسم والثمن');
+                return;
+            }
+
+            let base64Image = '';
+            if (imgInput.files && imgInput.files[0]) {
+                base64Image = await new Promise((res) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => res(e.target.result);
+                    reader.readAsDataURL(imgInput.files[0]);
+                });
+            }
+
+            const data = {
+                id: 'p' + Date.now(),
+                title: title,
+                price: parseFloat(price),
+                image: base64Image,
+                icon: 'fa-bag-shopping'
+            };
+
+            await dbPut('store', data);
+            navigate('store');
+        }
+
+        async function addVideo() {
+            const data = {
+                id: 'v' + Date.now(),
+                title: document.getElementById('v-title').value,
+                cat: document.getElementById('v-cat').value,
+                dur: "10:00"
+            };
+            await dbPut('videos', data);
+            navigate('videos');
+        }
+
+        async function delItem(table, id) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
+                await dbDelete(table, id);
+                navigate(currentView);
+            }
+        }
+
+        function saveAll() {
+            localStorage.setItem('app_master_data', JSON.stringify(APP_DATA));
+            alert('تم حفظ البيانات بنجاح! سيتم تحديث التطبيق فوراً.');
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(APP_DATA));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "shayfa_backup.json");
+            dlAnchorElem.click();
+        }
+
+        // --- BOOT ---
+        (async () => {
+            await initDB();
+            navigate('dashboard');
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,273 @@
+/**
+ * MODERN ANDROID (MATERIAL YOU) STYLES
+ * Optimized for high-resolution Android devices, Tablets, and Foldables.
+ */
+:root {
+    --primary: #2D6A4F;
+    /* Emerald Green (Android Standard) */
+    --on-primary: #FFFFFF;
+    --secondary: #D4AF37;
+    /* Gold */
+    --bg: #FDFDFD;
+    --surface: #FFFFFF;
+    --surface-variant: #F1F3F4;
+    --text: #191C1B;
+    --text-secondary: #3F4946;
+    --border: #DEE5E1;
+    --radius-lg: 28px;
+    /* Material 3 Rounded Corners */
+    --radius-md: 16px;
+    --font-main: 'Outfit', sans-serif;
+    --font-arabic: 'Amiri', serif;
+    --header-height: 80px;
+}
+
+[data-theme="dark"] {
+    --bg: #191C1B;
+    --surface: #1E2120;
+    --surface-variant: #3F4946;
+    --text: #E1E3E0;
+    --text-secondary: #BFC9C5;
+    --border: #3F4946;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Android Header */
+.app-header {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    height: var(--header-height);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+/* Android Hero (Prayer Dashboard) */
+.prayer-hero {
+    margin: 0 16px 24px;
+    padding: 32px 24px;
+    background: var(--primary);
+    color: var(--on-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 24px rgba(45, 106, 79, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hijri-date {
+    font-size: 1rem;
+    opacity: 0.8;
+    letter-spacing: 0.5px;
+}
+
+.next-prayer-name {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 8px 0;
+    line-height: 1;
+}
+
+.countdown {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.prayer-times-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+    gap: 8px;
+}
+
+.prayer-times-row div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.prayer-times-row span {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.prayer-times-row b {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Grid Navigation (Large Icons) */
+.grid-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 20px 32px;
+}
+
+.grid-menu div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.grid-menu div:active {
+    transform: scale(0.9);
+}
+
+.grid-menu i {
+    width: 64px;
+    height: 64px;
+    background: var(--surface-variant);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.grid-menu span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* Material Cards */
+.section-card {
+    margin: 0 16px 16px;
+    padding: 24px;
+    background: var(--surface-variant);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary);
+}
+
+.section-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+/* Bottom Android Navigation (Pill Active State) */
+.bottom-nav {
+    height: 80px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    position: relative;
+    width: 64px;
+}
+
+.nav-item i {
+    font-size: 1.5rem;
+    padding: 8px 20px;
+    border-radius: 20px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.nav-item.active i {
+    background: #E8F5E9;
+    color: var(--primary);
+}
+
+.nav-item span {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Loader */
+.loader-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--surface-variant);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: rotate 0.8s infinite cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none !important;
+}

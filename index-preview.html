@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Shayfa Way | طريق الشفاء</title>
+
+    <meta name="theme-color" content="#1b4332">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2D6A4F;
+            --primary-light: #40916c;
+            --primary-dark: #1B4332;
+            --secondary: #D4AF37;
+            --bg: #F8F9FA;
+            --surface: #FFFFFF;
+            --text: #1b1c1b;
+            --text-muted: #666;
+            --border: #eeeeee;
+            --radius: 28px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode Overrides */
+        body.dark {
+            --bg: #0b1d15;
+            --surface: #142a21;
+            --text: #e8f5e9;
+            --text-muted: #94a3b8;
+            --border: #1b382c;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            font-family: 'Outfit', 'Amiri', serif;
+            background: #d1d8d5;
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Phone Size Mirror */
+        .app-container {
+            width: 100%;
+            max-width: 440px;
+            height: 100vh;
+            background: var(--bg);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Loader */
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            color: white;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header */
+        header {
+            padding: 16px 24px;
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        header b {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        /* Nav Buttons */
+        .nav-link:active {
+            transform: scale(0.9);
+            transition: 0.2s;
+        }
+
+        /* Content */
+        #content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 90px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 40px 24px;
+            text-align: center;
+            border-radius: 0 0 35px 35px;
+            box-shadow: 0 15px 35px rgba(27, 67, 50, 0.2);
+        }
+
+        .hero .time {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 10px 0;
+            letter-spacing: -1px;
+        }
+
+        .hero .prayer-tag {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .prayer-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 20px;
+        }
+
+        .prayer-node {
+            text-align: center;
+            font-size: 0.75rem;
+        }
+
+        .prayer-node b {
+            display: block;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+
+        .prayer-node.active {
+            color: var(--secondary);
+            font-weight: 800;
+        }
+
+        /* Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 24px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .menu-item .icon-box {
+            width: 62px;
+            height: 62px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+            border: 1px solid #f0f0f0;
+            transition: 0.2s;
+        }
+
+        .menu-item:active .icon-box {
+            transform: scale(0.9);
+            background: #f8f9f8;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            margin: 0 24px 20px;
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #f9f9f9;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            margin: 0;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #444;
+            font-family: 'Amiri', serif;
+        }
+
+        /* Quran List */
+        .list-row {
+            background: white;
+            margin: 10px 24px;
+            padding: 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .list-row .num {
+            width: 40px;
+            height: 40px;
+            background: #e8f5e9;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .list-row .info {
+            flex: 1;
+            text-align: right;
+        }
+
+        .list-row h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Store */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 24px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 22px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            box-shadow: var(--shadow);
+        }
+
+        .product .img {
+            height: 110px;
+            background: #f8f9f8;
+            border-radius: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ddd;
+        }
+
+        .product b {
+            display: block;
+            font-size: 0.9rem;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .product .price {
+            color: var(--primary);
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        .product button {
+            width: 100%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Bottom Nav */
+        .nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 800;
+            width: 20%;
+            cursor: pointer;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            font-size: 1.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Content Overlay (Admin) */
+        #admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .admin-header {
+            padding: 20px 24px;
+            background: var(--primary-dark);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-tabs {
+            display: flex;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .admin-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .admin-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .admin-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body class="light">
+
+    <div class="app-container">
+
+        <!-- Splash Loader -->
+        <div id="splash">
+            <i class="fa-solid fa-kaaba" style="font-size: 4rem; color: var(--secondary); margin-bottom: 30px;"></i>
+            <b style="font-size: 1.8rem;">Shayfa Way</b>
+            <p style="opacity: 0.7; margin-top: 10px;">طريقك إلى حياة أفضل</p>
+            <div class="spinner" style="margin-top: 40px;"></div>
+        </div>
+
+        <!-- App UI -->
+        <header>
+            <div onclick="toggleAdmin()" style="cursor:pointer"><i class="fa-solid fa-gears"
+                    style="font-size:1.2rem; color:var(--text-muted)"></i></div>
+            <b>Shayfa Way</b>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fa-solid fa-sun" id="theme-icon"></i>
+            </div>
+        </header>
+
+        <main id="content">
+            <!-- Home Screen -->
+            <div id="view-home">
+                <div class="hero">
+                    <div class="prayer-tag" id="home-prayer-tag">حان الآن موعد أذان الظهر</div>
+                    <div class="time">12:34</div>
+                    <div style="opacity: 0.9; font-size: 0.9rem;">الجمعة، 20 فبراير • 24 شعبان</div>
+
+                    <div class="prayer-bar">
+                        <div class="prayer-node">الفجر<b>05:12</b></div>
+                        <div class="prayer-node">الشروق<b>06:34</b></div>
+                        <div class="prayer-node active">الظهر<b>12:34</b></div>
+                        <div class="prayer-node">العصر<b>15:45</b></div>
+                        <div class="prayer-node">المغرب<b>18:30</b></div>
+                        <div class="prayer-node">العشاء<b>19:50</b></div>
+                    </div>
+                </div>
+
+                <div class="nav-icons">
+                    <i class="fa-solid fa-user" id="nb-profile" onclick="show('profile')"></i>
+                </div>
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="show('quran')">
+                        <div class="icon-box"><i class="fa-solid fa-book-quran"></i></div><span>القرآن</span>
+                    </div>
+                    <div class="menu-item" onclick="show('qibla')">
+                        <div class="icon-box"><i class="fa-solid fa-compass"></i></div><span>القبلة</span>
+                    </div>
+                    <div class="menu-item" onclick="show('video')">
+                        <div class="icon-box"><i class="fa-solid fa-video"></i></div><span>الدروس</span>
+                    </div>
+                    <div class="menu-item" onclick="show('store')">
+                        <div class="icon-box"><i class="fa-solid fa-bag-shopping"></i></div><span>المتجر</span>
+                    </div>
+                    <div class="menu-item" onclick="show('duas')">
+                        <div class="icon-box"><i class="fa-solid fa-hands-praying"></i></div><span>الأدعية</span>
+                    </div>
+                    <div class="menu-item" onclick="show('mosque')">
+                        <div class="icon-box"><i class="fa-solid fa-mosque"></i></div><span>المساجد</span>
+                    </div>
+                    <div class="menu-item" onclick="show('hijri')">
+                        <div class="icon-box"><i class="fa-solid fa-calendar-days"></i></div><span>الهجري</span>
+                    </div>
+                    <div class="menu-item" onclick="hardReset()">
+                        <div class="icon-box" style="color:#ef4444"><i class="fa-solid fa-trash"></i></div>
+                        <span>إعادة</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-star"></i> آية اليوم</h3>
+                    <p id="home-verse-text">"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ"</p>
+                    <small id="home-verse-ref"
+                        style="color:var(--text-muted); display:block; margin-top:10px; font-family: 'Outfit';">Surah
+                        Ar-Ra'd (13:28)</small>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-sun"></i> أذكار الصباح</h3>
+                    <p id="home-dhikr-text">"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لا إِلَهَ
+                        إِلا اللَّهُ وَحْدَهُ لا شَرِيكَ لَهُ"</p>
+                </div>
+            </div>
+
+            <!-- Quran View -->
+            <div id="view-quran" class="hidden">
+                <div style="padding: 24px;">
+                    <h2 style="margin: 0; font-weight: 800;">القرآن الکريم</h2>
+
+                    <!-- Tracker Section: Khatm Master -->
+                    <div class="card"
+                        style="margin: 20px 0 0; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; text-align: right; position: relative; overflow: hidden;">
+                        <i class="fa-solid fa-kaaba"
+                            style="position:absolute; left:-20px; top:-20px; font-size:120px; opacity:0.1;"></i>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 style="color:white; margin:0;"><i class="fa-solid fa-star-and-crescent"></i> تتبع الختمة
+                            </h3>
+                            <span id="quran-progress-pct" style="font-size:1.5rem; font-weight:800;">0%</span>
+                        </div>
+
+                        <div style="display:flex; gap:15px; margin: 20px 0;">
+                            <div
+                                style="flex:1; background:rgba(255,255,255,0.15); padding:10px; border-radius:15px; text-align:center;">
+                                <small style="display:block; opacity:0.8;">الجزء</small>
+                                <b id="quran-juz" style="font-size:1.3rem;">1</b>
+                            </div>
+                            <div
+                                style="flex:1; background:rgba(255,255,255,0.15); padding:10px; border-radius:15px; text-align:center;">
+                                <small style="display:block; opacity:0.8;">الصفحة</small>
+                                <b id="quran-page-num" style="font-size:1.3rem;">1</b>
+                            </div>
+                            <div
+                                style="flex:1; background:rgba(255,255,255,0.15); padding:10px; border-radius:15px; text-align:center;">
+                                <small style="display:block; opacity:0.8;">الهدف</small>
+                                <b style="font-size:1.3rem;">+20</b>
+                            </div>
+                        </div>
+
+                        <div
+                            style="height:10px; background:rgba(255,255,255,0.2); border-radius:10px; margin-bottom:15px;">
+                            <div id="quran-progress-bar"
+                                style="height:100%; width:0%; background:white; border-radius:10px; transition:0.5s;">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="updatePage(-1)"
+                                style="flex:1; padding:12px; border-radius:14px; border:none; background:rgba(0,0,0,0.2); color:white; cursor:pointer;"><i
+                                    class="fa-solid fa-chevron-right"></i> سابقة</button>
+                            <button onclick="updatePage(1)"
+                                style="flex:1; padding:12px; border-radius:14px; border:none; background:var(--secondary); color:var(--primary-dark); font-weight:800; cursor:pointer;">تالية
+                                <i class="fa-solid fa-chevron-left"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Library Section: Dynamic PDFs from Admin -->
+                    <div style="margin-top:30px;">
+                        <h4 style="color: var(--primary); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i>
+                            اختر المصحف</h4>
+                        <div id="pdf-dynamic-list"
+                            style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px;">
+                            <!-- PDFs from Admin will be injected here as horizontal chips -->
+                            <p style="font-size:0.8rem; opacity:0.5;">يرجى رفع ملفات PDF من الإدارة</p>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Quran PDF Viewer (Integrated) -->
+                    <div id="quran-viewer-section" style="margin-top:20px;">
+                        <div
+                            style="padding:15px; background:var(--primary-dark); color:white; border-radius: 20px 20px 0 0; display:flex; justify-content:space-between; align-items:center;">
+                            <b id="reader-title">يرجى اختيار مصحف</b>
+                            <div style="display:flex; gap:15px; font-size:0.9rem;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <i class="fa-solid fa-bookmark"></i>
+                            </div>
+                        </div>
+                        <div
+                            style="height: 600px; background: #eee; border-radius: 0 0 20px 20px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border);">
+                            <iframe id="global-pdf-viewer" style="width:100%; height:100%; border:none;"></iframe>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Video View -->
+            <div id="view-video" class="hidden">
+                <div style="padding: 24px;">
+                    <h2 style="margin: 0; font-weight: 800;">الدروس العلمية</h2>
+                </div>
+                <div id="video-list"></div>
+            </div>
+
+            <!-- Store View -->
+            <div id="view-store" class="hidden">
+                <div style="padding: 24px;">
+                    <h2 style="margin: 0; font-weight: 800;">المتجر الإسلامي</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">أجود السجاد، المسابح، والمصاحف</p>
+                </div>
+                <div id="store-list" class="store-grid"></div>
+            </div>
+
+            <!-- Qibla View -->
+            <div id="view-qibla" class="hidden">
+                <div style="padding: 24px; text-align:center;">
+                    <h2 style="font-weight: 800; margin-bottom:40px;">اتجاة القبلة</h2>
+                    <div
+                        style="width:250px; height:250px; border:4px solid var(--primary); border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; position:relative;">
+                        <i class="fa-solid fa-location-arrow"
+                            style="font-size:4rem; color:var(--primary); transform: rotate(-45deg);"></i>
+                        <b style="position:absolute; top:10px;">North</b>
+                    </div>
+                    <p style="margin-top:40px; color:var(--text-muted);">يرجى تشغيل بوصلة الهاتف ووضع الجهاز بشكل مسطح
+                    </p>
+                </div>
+            </div>
+
+            <!-- Duas View -->
+            <div id="view-duas" class="hidden">
+                <div style="padding: 24px;">
+                    <h2 style="font-weight: 800;">الأدعية والمأثورات</h2>
+                    <div class="card" style="margin:20px 0;">
+                        <b>دعاء السفر</b>
+                        <p style="font-size:0.9rem; margin-top:5px;">"سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا
+                            لَهُ مُقْرِنِينَ"</p>
+                    </div>
+                    <div class="card" style="margin:20px 0;">
+                        <b>دعاء الاستخارة</b>
+                        <p style="font-size:0.9rem; margin-top:5px;">"اللهم إني أستخيرك بعلمك وأستقدرك بقدرتك..."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mosque View -->
+            <div id="view-mosque" class="hidden">
+                <div style="height: calc(100vh - 160px); display: flex; flex-direction: column;">
+                    <div style="padding: 24px; border-bottom: 1px solid var(--border);">
+                        <h2 style="font-weight: 800; margin: 0;">المساجد القريبة</h2>
+                    </div>
+                    <div style="flex: 1;">
+                        <iframe id="mosque-map" width="100%" height="100%" style="border:0;" allowfullscreen=""
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.google.com/maps?q=mosques+near+me&output=embed">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hijri View -->
+            <div id="view-hijri" class="hidden">
+                <div style="padding: 24px; text-align:center;">
+                    <h2 style="font-weight: 800; margin-bottom:20px;">التقويم الهجري</h2>
+                    <div class="card" style="background:var(--primary-dark); color:white;">
+                        <span style="font-size:3rem; font-weight:800; display:block;">24</span>
+                        <span style="font-size:1.5rem;">شعبان 1447</span>
+                        <hr style="opacity:0.2; margin:15px 0;">
+                        <p style="font-size:0.9rem; font-family: 'Outfit';">Friday, 20 February 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile View -->
+            <div id="view-profile" class="hidden">
+                <div style="padding: 24px;">
+                    <h2 style="font-weight: 800; margin-bottom:30px; text-align:center;">الملف الشخصي</h2>
+
+                    <div style="text-align:center; margin-bottom:30px;">
+                        <div
+                            style="width:100px; height:100px; background:var(--primary); color:white; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; font-size:3rem; box-shadow:0 10px 20px rgba(45, 106, 79, 0.2);">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-box"
+                        style="background:white; padding:20px; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                        <div class="form-group" style="margin-bottom:20px;">
+                            <label
+                                style="display:block; margin-bottom:8px; font-weight:700; color:var(--primary);">الاسم
+                                الكامل</label>
+                            <input type="text" id="user-name" placeholder="أدخل اسمك..."
+                                style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-family:inherit;">
+                        </div>
+                        <div class="form-group" style="margin-bottom:20px;">
+                            <label style="display:block; margin-bottom:8px; font-weight:700; color:var(--primary);">رقم
+                                الهاتف</label>
+                            <input type="tel" id="user-phone" placeholder="06XXXXXXXX"
+                                style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-family:inherit;">
+                        </div>
+                        <div class="form-group" style="margin-bottom:30px;">
+                            <label
+                                style="display:block; margin-bottom:8px; font-weight:700; color:var(--primary);">البلد</label>
+                            <input type="text" id="user-country" placeholder="المغرب، السعودية..."
+                                style="width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-family:inherit;">
+                        </div>
+
+                        <button onclick="saveUserProfile()"
+                            style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:15px; font-weight:800; cursor:pointer; font-size:1rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات
+                        </button>
+                    </div>
+
+                    <p style="text-align:center; margin-top:30px; font-size:0.8rem; opacity:0.5;">سيتم استخدام هذه
+                        البيانات لتخصيص تجربتك وتحسين خدماتنا</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div onclick="show('home')" class="nav-btn active" id="nb-home"><i
+                    class="fa-solid fa-home"></i><span>الرئيسية</span></div>
+            <div onclick="show('quran')" class="nav-btn" id="nb-quran"><i
+                    class="fa-solid fa-book-open"></i><span>القرآن</span></div>
+            <div onclick="show('video')" class="nav-btn" id="nb-video"><i
+                    class="fa-solid fa-circle-play"></i><span>الدروس</span></div>
+            <div onclick="show('store')" class="nav-btn" id="nb-store"><i
+                    class="fa-solid fa-shopping-bag"></i><span>المتجر</span></div>
+            <div onclick="toggleAdmin()" class="nav-btn"><i class="fa-solid fa-gear"></i><span>الإدارة</span></div>
+        </nav>
+
+        <!-- Admin Overlay -->
+        <div id="admin-panel">
+            <div class="admin-header">
+                <b>لوحة التحكم الشاملة</b>
+                <i class="fa-solid fa-times" onclick="toggleAdmin()" style="cursor:pointer"></i>
+            </div>
+
+            <div class="admin-tabs">
+                <div class="admin-tab active" onclick="switchAdminTab('general')">العام</div>
+                <div class="admin-tab" onclick="switchAdminTab('store')">المتجر</div>
+                <div class="admin-tab" onclick="switchAdminTab('video')">الفيديو</div>
+            </div>
+
+            <div class="admin-body">
+                <!-- General Section -->
+                <div id="admin-general" class="admin-section">
+                    <h4 style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:5px;">إعدادات الصفحة
+                        الرئيسية</h4>
+                    <div class="form-group">
+                        <label>آية اليوم</label>
+                        <textarea id="adm-verse" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>المرجع (سورة/رقم)</label>
+                        <input type="text" id="adm-ref">
+                    </div>
+                    <div class="form-group">
+                        <label>ذكر اليوم</label>
+                        <textarea id="adm-dhikr" rows="2"></textarea>
+                    </div>
+                    <button class="admin-btn save-btn" onclick="saveAdminData()">حفظ التعديلات</button>
+                    <button class="admin-btn" onclick="hardReset()"
+                        style="background:#fee2e2; color:#ef4444; width:100%; margin-top:10px;">إعادة ضبط المصنع (Clear
+                        Cache)</button>
+                </div>
+
+                <!-- Store Section -->
+                <div id="admin-store" class="admin-section hidden">
+                    <h4 style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:5px;">إدارة منتجات
+                        المتجر</h4>
+                    <div id="admin-store-list"></div>
+                    <button class="admin-btn save-btn" style="background:#eee; color:#666;">+ إضافة منتج جديد
+                        (قريباً)</button>
+                </div>
+
+                <!-- Video Section -->
+                <div id="admin-video" class="admin-section hidden">
+                    <h4 style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:5px;">إدارة الفيديوهات
+                    </h4>
+                    <div id="admin-video-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * SHAYFA WAY - PRODUCTION SYNC V25
+         * Connected to Central Admin Panel
+         */
+
+        let db;
+        const DB_NAME = 'Shayfa_V25_Official';
+
+        // Load Master Data from Sync
+        let APP_DATA = JSON.parse(localStorage.getItem('app_master_data')) || {
+            branding: { title: "Shayfa Way", slogan: "طريقك إلى حياة أفضل" },
+            home: {
+                verse: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+                ref: "Surah Ar-Ra'd (13:28)",
+                dhikr: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لا إِلَهَ إِلا اللَّهُ وَحْدَهُ لا شَرِيكَ لَهُ"
+            },
+            prayers: {
+                fajr: "05:12", shuruq: "06:34", dhuhr: "12:34", asr: "15:45", maghrib: "18:30", isha: "19:50"
+            }
+        };
+
+        async function initSyncDB() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const d = e.target.result;
+                    if (!d.objectStoreNames.contains('quran')) d.createObjectStore('quran', { keyPath: 'id' });
+                    if (!d.objectStoreNames.contains('store')) d.createObjectStore('store', { keyPath: 'id' });
+                    if (!d.objectStoreNames.contains('videos')) d.createObjectStore('videos', { keyPath: 'id' });
+                };
+                request.onsuccess = (e) => { db = e.target.result; resolve(); };
+            });
+        }
+
+        async function dbGetAll(table) {
+            return new Promise(res => {
+                const tx = db.transaction(table, 'readonly');
+                tx.objectStore(table).getAll().onsuccess = (e) => res(e.target.result);
+            });
+        }
+
+        async function autoDetectLocation() {
+            if (!navigator.geolocation) {
+                console.log("Geolocation not supported");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const { latitude, longitude } = pos.coords;
+                console.log(`Detected Location: ${latitude}, ${longitude}`);
+
+                try {
+                    const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=3`);
+                    const json = await res.json();
+                    const data = json.data;
+
+                    // Update Prayers
+                    const p = data.timings;
+                    APP_DATA.prayers = {
+                        fajr: p.Fajr,
+                        shuruq: p.Sunrise,
+                        dhuhr: p.Dhuhr,
+                        asr: p.Asr,
+                        maghrib: p.Maghrib,
+                        isha: p.Isha
+                    };
+
+                    // Update Hijri & Date UI
+                    const hijri = data.date.hijri;
+                    const gregorian = data.date.gregorian;
+
+                    const dateTag = document.querySelector('.hero div[style*="opacity: 0.9"]');
+                    if (dateTag) {
+                        dateTag.innerText = `${gregorian.weekday.ar}، ${gregorian.day} ${gregorian.month.en} • ${hijri.day} ${hijri.month.ar}`;
+                    }
+
+                    // Force UI Refresh
+                    updateUIBranding();
+
+                    // Update Hijri View if active
+                    const hijriCard = document.querySelector('#view-hijri .card');
+                    if (hijriCard) {
+                        hijriCard.innerHTML = `
+                            <span style="font-size:3rem; font-weight:800; display:block;">${hijri.day}</span>
+                            <span style="font-size:1.5rem;">${hijri.month.ar} ${hijri.year}</span>
+                            <hr style="opacity:0.2; margin:15px 0;">
+                            <p style="font-size:0.9rem; font-family: 'Outfit';">${gregorian.date}</p>
+                        `;
+                    }
+
+                } catch (err) {
+                    console.error("Failed to fetch timings", err);
+                }
+            }, (err) => {
+                console.warn("Location permission denied. Using defaults.");
+            });
+        }
+
+        function updateUIBranding() {
+            document.querySelectorAll('.app-title').forEach(el => el.innerText = APP_DATA.branding.title);
+
+            // Dynamic Time
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.querySelector('.hero .time').innerText = timeStr;
+
+            document.getElementById('home-verse-text').innerText = APP_DATA.home.verse;
+            document.getElementById('home-verse-ref').innerText = APP_DATA.home.ref;
+            document.getElementById('home-dhikr-text').innerText = APP_DATA.home.dhikr;
+
+            const p = APP_DATA.prayers;
+            const bar = document.querySelector('.prayer-bar');
+            if (bar) {
+                bar.innerHTML = `
+                    <div class="prayer-node">الفجر<b>${p.fajr}</b></div>
+                    <div class="prayer-node">الشروق<b>${p.shuruq}</b></div>
+                    <div class="prayer-node active">الظهر<b>${p.dhuhr}</b></div>
+                    <div class="prayer-node">العصر<b>${p.asr}</b></div>
+                    <div class="prayer-node">المغرب<b>${p.maghrib}</b></div>
+                    <div class="prayer-node">العشاء<b>${p.isha}</b></div>
+                `;
+            }
+
+            // Check for prayer tag (optional: could be more dynamic)
+            document.getElementById('home-prayer-tag').innerText = `أوقات الصلاة في موقعك الحالي`;
+        }
+
+        function getCurrentPrayer() { return "الظهر"; } // Simplified logic
+
+        async function renderLists() {
+            // Store
+            const storeList = document.getElementById('store-list');
+            if (storeList) {
+                const items = await dbGetAll('store');
+                storeList.innerHTML = items.length ? items.map(p => `
+                    <div class="product">
+                        <div class="img">
+                            ${p.image ? `<img src="${p.image}" style="width:100%; height:100%; object-fit:cover; border-radius:15px;">` : `<i class="fa-solid ${p.icon || 'fa-bag-shopping'}"></i>`}
+                        </div>
+                        <b>${p.title}</b>
+                        <div class="price">${p.price} DH</div>
+                        <button><i class="fa-solid fa-cart-plus"></i> إضافة</button>
+                    </div>
+                `).join('') : '<p style="text-align:center; padding:40px; opacity:0.5; grid-column:span 2;">لا توجد منتجات حالياً</p>';
+            }
+
+            // Videos
+            const videoList = document.getElementById('video-list');
+            if (videoList) {
+                const vids = await dbGetAll('videos');
+                videoList.innerHTML = vids.map(v => `
+                    <div class="list-row">
+                        <div class="num" style="background:#fff3e0"><i class="fa-solid fa-play" style="color:#fb8c00"></i></div>
+                        <div class="info">
+                            <h4>${v.title}</h4>
+                            <small>${v.cat} • ${v.dur}</small>
+                        </div>
+                        <i class="fa-solid fa-circle-chevron-left" style="color:#ddd"></i>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // --- CORE FUNCTIONS ---
+        function toggleTheme() {
+            const b = document.body;
+            b.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            icon.className = b.classList.contains('dark') ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+            localStorage.setItem('theme', b.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        // --- ADMIN ENGINE ---
+        function toggleAdmin() {
+            const p = document.getElementById('admin-panel');
+            const isVisible = p.style.display === 'flex';
+            p.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) {
+                // Pre-fill forms from CONTENT
+                document.getElementById('adm-verse').value = APP_DATA.home.verse;
+                document.getElementById('adm-ref').value = APP_DATA.home.ref;
+                document.getElementById('adm-dhikr').value = APP_DATA.home.dhikr;
+            }
+        }
+
+        function switchAdminTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
+
+            event.target.classList.add('active');
+            document.getElementById('admin-' + tab).classList.remove('hidden');
+        }
+
+        function saveAdminData() {
+            APP_DATA.home.verse = document.getElementById('adm-verse').value;
+            APP_DATA.home.ref = document.getElementById('adm-ref').value;
+            APP_DATA.home.dhikr = document.getElementById('adm-dhikr').value;
+
+            localStorage.setItem('app_master_data', JSON.stringify(APP_DATA));
+            updateUIBranding();
+            toggleAdmin();
+            alert('تم حفظ التعديلات بنجاح!');
+        }
+
+        // Quran Progress Logic
+        let currentPage = parseInt(localStorage.getItem('quran_page') || '1');
+        const totalPages = 604;
+
+        function updatePage(delta) {
+            currentPage = Math.max(1, Math.min(604, currentPage + delta));
+            localStorage.setItem('quran_page', currentPage);
+            renderTracker();
+
+            // Core Sync: Update PDF Viewer to the new page
+            const viewer = document.getElementById('global-pdf-viewer');
+            if (viewer.src && viewer.src !== 'about:blank') {
+                const baseUrl = viewer.src.split('#')[0];
+                viewer.src = baseUrl + "#page=" + currentPage;
+            }
+        }
+
+        function renderTracker() {
+            const pct = Math.round((currentPage / totalPages) * 100);
+            const juz = Math.ceil((currentPage / 604) * 30);
+
+            if (document.getElementById('quran-progress-bar')) {
+                document.getElementById('quran-progress-bar').style.width = pct + '%';
+                document.getElementById('quran-progress-pct').innerText = pct + '%';
+                document.getElementById('quran-page-num').innerText = currentPage;
+                document.getElementById('quran-juz').innerText = juz;
+            }
+        }
+
+        async function renderDynamicPDFs() {
+            const list = document.getElementById('pdf-dynamic-list');
+            if (!list) return;
+
+            let pdfs = await dbGetAll('quran');
+
+            if (!pdfs.length) {
+                pdfs = [{
+                    id: 'internal-default',
+                    title: 'المصحف الشريف (افتراضي)',
+                    url: 'https://archive.org/download/quran-mushaf-full/quran-mushaf-full.pdf'
+                }];
+                list.innerHTML = '<p style="font-size:0.7rem; color:var(--primary); width:100%; text-align:center;">يتم عرض نسخة احتياطية</p>';
+            } else {
+                list.innerHTML = '';
+            }
+
+            list.innerHTML += pdfs.map(p => `
+                <div class="badge" onclick="loadPDFInPage('${p.id}')" style="background:white; border:1px solid var(--border); padding:8px 15px; border-radius:15px; white-space:nowrap; cursor:pointer; color:var(--primary); font-weight:700; margin-right:5px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <i class="fa-solid fa-file-pdf"></i> ${p.title}
+                </div>
+            `).join('');
+
+            if (pdfs.length > 0) loadPDFInPage(pdfs[0].id);
+        }
+
+        async function loadPDFInPage(pdfId) {
+            const dbPdfs = await dbGetAll('quran');
+            let pdf = dbPdfs.find(p => p.id === pdfId);
+
+            if (!pdf && pdfId === 'internal-default') {
+                pdf = { title: 'المصحف الشريف', url: 'https://archive.org/download/quran-mushaf-full/quran-mushaf-full.pdf' };
+            }
+            if (!pdf) return;
+
+            const viewer = document.getElementById('global-pdf-viewer');
+            const title = document.getElementById('reader-title');
+            title.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري فتح: ${pdf.title}`;
+
+            const targetUrl = pdf.blob ? URL.createObjectURL(pdf.blob) : pdf.url;
+            // Sync current page to PDF
+            viewer.src = targetUrl + "#page=" + currentPage;
+            title.innerText = pdf.title;
+
+            document.querySelectorAll('#pdf-dynamic-list .badge').forEach(b => {
+                const isActive = b.innerText.includes(pdf.title);
+                b.style.background = isActive ? 'var(--primary)' : 'white';
+                b.style.color = isActive ? 'white' : 'var(--primary)';
+            });
+        }
+
+        function show(viewId) {
+            document.querySelectorAll('main > div').forEach(v => v.classList.add('hidden'));
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById('nb-' + viewId);
+            if (btn) btn.classList.add('active');
+
+            if (viewId === 'quran') {
+                renderTracker();
+                renderDynamicPDFs();
+            }
+            if (['store', 'video'].includes(viewId)) renderLists();
+            if (viewId === 'profile') {
+                loadUserProfile();
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function hardReset() {
+            if (confirm('هل تريد مسح جميع البيانات؟')) {
+                localStorage.clear();
+                indexedDB.deleteDatabase('Shayfa_V10');
+                indexedDB.deleteDatabase('Shayfa_V12_Final');
+                indexedDB.deleteDatabase('Shayfa_V15_Prod');
+                location.reload();
+            }
+        }
+
+        function saveUserProfile() {
+            const profile = {
+                name: document.getElementById('user-name').value,
+                phone: document.getElementById('user-phone').value,
+                country: document.getElementById('user-country').value
+            };
+            localStorage.setItem('user_profile', JSON.stringify(profile));
+            alert('تم حفظ بيانات الملف الشخصي بنجاح');
+            show('home');
+        }
+
+        function loadUserProfile() {
+            const saved = localStorage.getItem('user_profile');
+            if (saved) {
+                const profile = JSON.parse(saved);
+                document.getElementById('user-name').value = profile.name || '';
+                document.getElementById('user-phone').value = profile.phone || '';
+                document.getElementById('user-country').value = profile.country || '';
+            }
+        }
+
+        // --- GLOBAL BOOT ---
+        window.addEventListener('DOMContentLoaded', async () => {
+            await initSyncDB();
+            updateUIBranding();
+            autoDetectLocation(); // Live Location & Timing Sync
+            loadUserProfile(); // Load Name, Phone, Country
+
+            // Check theme
+            if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                show('home');
+            }, 1000);
+        });
+
+        // Watch for Storage Changes
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'app_master_data') {
+                APP_DATA = JSON.parse(e.newValue);
+                updateUIBranding();
+            }
+        });
+    </script>
+</body>
+
+</html>

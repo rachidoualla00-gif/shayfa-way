@@ -1,0 +1,206 @@
+:root {
+    --primary: #4A7C59;
+    --bg: #0F172A;
+    --sidebar: #1E293B;
+    --surface: #FFFFFF;
+    --text: #1E293B;
+    --border: #E2E8F0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    background: #F8FAFC;
+}
+
+/* Auth */
+#login-screen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-card h1 {
+    color: var(--primary);
+    margin-bottom: 30px;
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Dashboard Layout */
+#dashboard-screen {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background: var(--sidebar);
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .brand {
+    padding: 30px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar nav {
+    flex: 1;
+    padding: 20px 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 15px 30px;
+    color: #94A3B8;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--primary);
+}
+
+.sidebar a.logout {
+    color: #F87171;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main-content header {
+    padding: 20px 40px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#content-area {
+    padding: 40px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Dashboard Cards */
+.grid-container {
+    margin-bottom: 40px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: #64748B;
+    margin: 0;
+}
+
+.card h1 {
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 15px 25px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    background: #F8FAFC;
+    color: #64748B;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+td {
+    font-size: 0.9rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+button.delete {
+    background: #FEE2E2;
+    color: #EF4444;
+    border: 1px solid #FCA5A5;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.loading {
+    text-align: center;
+    padding: 100px;
+    color: #64748B;
+}
